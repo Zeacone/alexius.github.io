@@ -87,6 +87,7 @@ func getBytesCount(of string: String) -> Int {
 }
 ```
 
+以上就是针对中英文限制字数不同的解决方案了。
 
 ---
 
