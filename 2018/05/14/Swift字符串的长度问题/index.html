@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="获取的字符串长度不一样？在 Swift 中获取字符串的长度很简单，只需要调用 count 属性即可。 123let string &#x3D; &quot;这是🐘，它的👃很长&quot;print(&quot;string 的长度为： \(string.count)&quot;)&#x2F;&#x2F; 输出: &quot;string 的长度为： 9&quot;  这在日常的使用中是没有什么问题的，直到我在项目中遇到了一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift字符串的长度问题">
+<meta property="og:url" content="http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Alexius&#39;s Utopia">
+<meta property="og:description" content="获取的字符串长度不一样？在 Swift 中获取字符串的长度很简单，只需要调用 count 属性即可。 123let string &#x3D; &quot;这是🐘，它的👃很长&quot;print(&quot;string 的长度为： \(string.count)&quot;)&#x2F;&#x2F; 输出: &quot;string 的长度为： 9&quot;  这在日常的使用中是没有什么问题的，直到我在项目中遇到了一">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-05-14T14:16:03.000Z">
+<meta property="article:modified_time" content="2021-08-11T09:05:55.060Z">
+<meta property="article:author" content="Alexius">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="String">
+<meta property="article:tag" content="NSString">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Swift字符串的长度问题</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/projects/">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2020/02/12/SwiftUI%E4%B8%AD%E7%9A%84Property-Wrapper-01/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/03/15/%E3%80%90iOS%E3%80%91%E4%B8%8D%E5%B8%B8%E7%94%A8%E4%BD%86%E4%B8%8D%E8%83%BD%E4%B8%8D%E7%9F%A5%E9%81%93/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&text=Swift字符串的长度问题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&is_video=false&description=Swift字符串的长度问题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Swift字符串的长度问题&body=Check out this article: http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&name=Swift字符串的长度问题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&t=Swift字符串的长度问题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6%E4%B8%8D%E4%B8%80%E6%A0%B7%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">获取的字符串长度不一样？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E8%8B%B1%E6%96%87%E9%99%90%E5%88%B6%E5%AD%97%E6%95%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">中英文限制字数的问题</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Swift字符串的长度问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Alexius's Utopia</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-05-14T14:16:03.000Z" itemprop="datePublished">2018-05-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/NSString/" rel="tag">NSString</a>, <a class="tag-link-link" href="/tags/String/" rel="tag">String</a>, <a class="tag-link-link" href="/tags/Swift/" rel="tag">Swift</a>, <a class="tag-link-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="获取的字符串长度不一样？"><a href="#获取的字符串长度不一样？" class="headerlink" title="获取的字符串长度不一样？"></a>获取的字符串长度不一样？</h3><p>在 Swift 中获取字符串的长度很简单，只需要调用 <code>count</code> 属性即可。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> string <span class="operator">=</span> <span class="string">&quot;这是🐘，它的👃很长&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;string 的长度为： <span class="subst">\(string.count)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 输出: &quot;string 的长度为： 9&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这在日常的使用中是没有什么问题的，直到我在项目中遇到了一个评论 emoji 乱码的问题。<br>问题表现为，在评论的末尾如果是 emoji 的话， 则会变成无法显示的❓，如果 emoji 出现在其它地方，则很少出现这个显示不了的问题。<br>后来经过多次的一步步调试，终于确定是在将字符串转为富文本的时候出现的问题。</p>
+<p>因为评论中包含链接，用户名，以及要调节行高和字间距等等，所以必须要使用富文本来显示，在此处，就简单地写下大概的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">convertToAttributedString</span>(<span class="params">with</span> <span class="params">string</span>: <span class="type">String</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> attrString <span class="operator">=</span> <span class="type">NSMutableAttributedString</span>(string: string)</span><br><span class="line">    <span class="keyword">let</span> range <span class="operator">=</span> <span class="type">NSMakeRange</span>(<span class="number">0</span>, string.count) <span class="comment">// 1</span></span><br><span class="line">    attrString.addAttribute(<span class="operator">...</span>, value: <span class="operator">...</span>, range: range)</span><br><span class="line">    <span class="operator">...</span></span><br><span class="line">    <span class="keyword">return</span> attrString</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">convertToAttributedString(with: <span class="string">&quot;今天天气真好啊😄&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>问题就出现在注释1的地方，先来看看 Swift 的官方文档。</p>
+<blockquote>
+<p>Extended grapheme clusters can be composed of multiple Unicode scalars. This means that different characters—and different representations of the same character—can require different amounts of memory to store. Because of this, characters in Swift don’t each take up the same amount of memory within a string’s representation. As a result, the number of characters in a string can’t be calculated without iterating through the string to determine its extended grapheme cluster boundaries. If you are working with particularly long string values, be aware that the count property must iterate over the Unicode scalars in the entire string in order to determine the characters for that string.</p>
+<p>The count of the characters returned by the count property isn’t always the same as the length property of an NSString that contains the same characters. The length of an NSString is based on the number of 16-bit code units within the string’s UTF-16 representation and not the number of Unicode extended grapheme clusters within the string.</p>
+</blockquote>
+<p>意思就是有个东西叫做 <code>Extended Grapheme Clusters</code>， 而这个 <code>Extended Grapheme Clusters</code> 是可以由多个 Unicode 标量组成。因此不同的字符或者同一字符的不同表现形式可能需要不同数量的内存来存储。这样就造成了 <code>String</code> 的 <code>count</code> 属性无法准确表示实际所占用的内存大小，而只是我们肉眼所能看到的字符长度。而 <code>NSString</code> 使用的是 UTF-16 字符编码方式，<code>length</code> 表示的是16位代码单元的数量而不是扩展字符集的数量。</p>
+<p>现在再回头看我所遇到的问题就比较清晰明了了，<code>NSMutableAttributedString</code> 与 <code>NSString</code> 的表现形式一样使用 UTF-16。<br>上面的例子中 <code>string.count</code> 的值为 8，而 <code>attrString</code> 在添加属性的时候，按照这个 <code>range</code>，并不能完整地将 emoji 转为富文本，因此 emoji 才会无法显示。</p>
+<p>那么如何修改呢，其实非常简单，只要在计算 range 的时候将 String 转为 NSString，或者使用 UTF-16 的数量。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">convertToAttributedString</span>(<span class="params">with</span> <span class="params">string</span>: <span class="type">String</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> attrString <span class="operator">=</span> <span class="type">NSMutableAttributedString</span>(string: string)</span><br><span class="line">    <span class="keyword">let</span> range1 <span class="operator">=</span> <span class="type">NSMakeRange</span>(<span class="number">0</span>, <span class="type">NSString</span>(string: string).length)</span><br><span class="line">    <span class="keyword">let</span> range2 <span class="operator">=</span> <span class="type">NSMakeRange</span>(<span class="number">0</span>, string.utf16.count)</span><br><span class="line">    attrString.addAttribute(<span class="operator">...</span>, value: <span class="operator">...</span>, range: range1)</span><br><span class="line">    <span class="operator">...</span></span><br><span class="line">    <span class="keyword">return</span> attrString</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">convertToAttributedString(with: <span class="string">&quot;今天天气真好啊😄&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>现在使用 <code>range1</code> 或者 <code>range2</code> 转换为富文本就不会再出现末尾 emoji 乱码的问题了。</p>
+<h3 id="中英文限制字数的问题"><a href="#中英文限制字数的问题" class="headerlink" title="中英文限制字数的问题"></a>中英文限制字数的问题</h3><p>既然都说到字符串长度的问题了，顺便再讨论下另外以一个问题。  </p>
+<p>相信在日常的工作中，我们都不免会遇到要限制输入字数的问题。通用的做法都是在 <code>textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -&gt; Bool</code> 中计算 textField.text.count 和 string.count 之和，如果数字超过了限制的最大字数，则返回 false，不再允许用户输入。</p>
+<p>这种做法一般来说没什么问题，但是如果老板告诉你中文限制100字，英文限制200字，那么应该怎么办呢？</p>
+<p>我们先来看看，不同的编码方式是怎么来存储字符的。</p>
+<ul>
+<li>UTF-8：一个英文字符占用一个字节，一个中文占用三个字节。</li>
+<li>UTF-16：一个英文字母字符或一个汉字字符存储都需要 2 个字节（Unicode 扩展区的一些汉字存储需要4 个字节）</li>
+<li>UTF-32：使用 4 个字节表示一个字符。</li>
+<li>GBK：一个英文占用一个字节，一个中文占用两个字节。</li>
+<li>GB2312：一个英文占用一个字节，一个中文占用两个字节。</li>
+</ul>
+<p><em><strong>此处只是简单地认识一下不同编码方式下中英文所占用的内存空间大小，想更深入了解请查询字符编码相关详细资料。</strong></em></p>
+<p>从上面可以看出，如果使用GBK 编码和 GB2312 编码，那么只需要计算出所占用的字节数， 就可以变相地达到限制中英文不同字数的需求。比如说，如果在 <code>UITextField</code> 的代理中限制字节数为 20，那么就只能输入 10 个中文文字或 20 个英文字母或者 5 个中文和 10 个英文字母。</p>
+<p>下面则是计算所占用字节数的计算方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getBytesCount</span>(<span class="params">of</span> <span class="params">string</span>: <span class="type">String</span>)</span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> encoding <span class="operator">=</span> <span class="type">CFStringConvertEncodingToNSStringEncoding</span>(<span class="type">CFStringEncoding</span>(<span class="type">CFStringEncodings</span>.<span class="type">GB_18030_2000</span>.rawValue))</span><br><span class="line">    <span class="keyword">let</span> data <span class="operator">=</span> string.data(using: <span class="type">String</span>.<span class="type">Encoding</span>(rawValue: encoding))<span class="operator">!</span></span><br><span class="line">    <span class="keyword">return</span> data.count</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上就是针对中英文限制字数不同的解决方案了。</p>
+<hr>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.swift.org/swift-book/LanguageGuide/StringsAndCharacters.html">Swift 文档</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/projects/">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6%E4%B8%8D%E4%B8%80%E6%A0%B7%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">获取的字符串长度不一样？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E8%8B%B1%E6%96%87%E9%99%90%E5%88%B6%E5%AD%97%E6%95%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">中英文限制字数的问题</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&text=Swift字符串的长度问题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&is_video=false&description=Swift字符串的长度问题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Swift字符串的长度问题&body=Check out this article: http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&title=Swift字符串的长度问题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&name=Swift字符串的长度问题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/05/14/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%95%BF%E5%BA%A6%E9%97%AE%E9%A2%98/&t=Swift字符串的长度问题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2014-2021
+    Alexius
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/projects/">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
